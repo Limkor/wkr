@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Результаты теста{% endblock %}
+{% block content %}
+<h2>Результаты теста: {{ assignment.test.title }}</h2>
+<p>Ваш балл: <strong>{{ assignment.score }}</strong> / {{ assignment.test.questions|sum(attribute='points') }}</p>
+
+{% if answers %}
+    <h4>Детали ответов</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Вопрос</th>
+                <th>Ваш ответ</th>
+                <th>Правильный ответ</th>
+                <th>Результат</th>
+                <th>Баллы</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ans in answers %}
+            <tr class="{% if ans.is_correct %}table-success{% else %}table-danger{% endif %}">
+                <td>{{ ans.question.question }}</td>
+                <td>{{ ans.user_answer }}</td>
+                <td>{{ ans.question.correct_answer }}</td>
+                <td>{{ "Верно" if ans.is_correct else "Неверно" }}</td>
+                <td>{{ ans.points_earned }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% if recommended_courses %}
+    <h3>Рекомендованные курсы для повышения квалификации</h3>
+    <div class="row">
+        {% for course in recommended_courses %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description[:100] }}{% if course.description|length > 100 %}...{% endif %}</p>
+                    <p><strong>Уровень:</strong> {{ course.level }}<br>
+                       <strong>Длительность:</strong> {{ course.duration }}<br>
+                       <strong>Теги:</strong> {{ course.tags }}</p>
+                    <a href="{{ course.url }}" target="_blank" class="btn btn-primary">Перейти к курсу</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>По результатам теста не найдено подходящих курсов. Обратитесь к HR для подбора обучения.</p>
+{% endif %}
+{% if external_courses %}
+    <h3>Поиск курсов в интернете</h3>
+    <div class="row">
+        {% for course in external_courses %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description }}</p>
+                    <a href="{{ course.url }}" target="_blank" class="btn btn-primary">Перейти на {{ course.source }}</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+<a href="{{ url_for('employee.dashboard') }}" class="btn btn-secondary">Вернуться на дашборд</a>
+{% endblock %}

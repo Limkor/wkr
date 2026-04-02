@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+</head>
+<body>
+    <h1>Добро пожаловать, {{ session['username'] }}!</h1>
+    <a href="{{ url_for('logout') }}">Выйти</a>
+    <h2>Отправка данных на Python-бэкенд</h2>
+    <form action="/submit" method="post">
+        <label for="name">Ваше имя:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Отправить</button>
+    </form>
+</body>
+</html>

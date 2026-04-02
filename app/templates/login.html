@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="hero">
+        <button class="lol-btn" id="toggleFormBtn">Вход</button>
+        <div class="content">
+            <div id="productDescription">
+                <h1>ХФ | Проверка квалификации персонала</h1>
+                <h3>Продукт от разработчика ООО представляет собой веб-сервис предназначеный для проверки квалификации персонала включающий в себя:</h3>
+                <br>
+                <p>1. Проверку квалификации персонала на уже готовых и разработаннух тестах.
+                    <br>2. Для HR-специалиста возможность создания собственных тестов.
+                    <br>3. После тестирования сразу предоставляются результаты и в случе плохого результата сервис находит курсы по повышению квалификации.
+                </p>
+                <br>
+                <h4>Хотите протестировать продукт? <br>Тогда самое время подать заявку</h4>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div id="formTitle" class="form-title">Регистрация HR-менеджера</div>
+
+            <!-- Форма регистрации (видна по умолчанию) -->
+            <form id="registerForm" method="post" action="{{ url_for('auth.register') }}">
+                <input type="text" name="username" placeholder="Логин" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <input type="password" name="confirm_password" placeholder="Подтвердите пароль" required>
+                <button type="submit">Зарегистрироваться как HR</button>
+            </form>
+
+            <!-- Форма входа (изначально скрыта) -->
+            <form id="loginForm" method="post" action="{{ url_for('auth.login') }}" class="hidden-form">
+                <input type="text" name="username" placeholder="Логин" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+                <p><small>Тестовые учётные данные: hr_manager/hrpass (HR) или admin/password (админ)</small></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Создание теста{% endblock %}
+{% block content %}
+<h2>Создание теста</h2>
+<form method="POST" id="testForm">
+    <div class="mb-3">
+        <label for="title" class="form-label">Название теста</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Описание</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+    </div>
+
+    <h4>Вопросы</h4>
+    <div id="questionsContainer">
+        <div class="question-item card mb-3">
+            <div class="card-body">
+                <div class="mb-2">
+                    <label class="form-label">Текст вопроса</label>
+                    <input type="text" class="form-control" name="question_1" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Правильный ответ</label>
+                    <input type="text" class="form-control" name="correct_1" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Баллы</label>
+                    <input type="number" class="form-control" name="points_1" value="1">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Тема (для рекомендаций)</label>
+                    <input type="text" class="form-control" name="topic_1">
+                </div>
+                <button type="button" class="btn btn-danger remove-question">Удалить вопрос</button>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-secondary" id="addQuestion">Добавить вопрос</button>
+    <button type="submit" class="btn btn-primary">Создать тест</button>
+</form>
+
+<script>
+    let questionCount = 1;
+    document.getElementById('addQuestion').addEventListener('click', function() {
+        questionCount++;
+        const container = document.getElementById('questionsContainer');
+        const newQuestion = document.querySelector('.question-item').cloneNode(true);
+        newQuestion.querySelectorAll('input, textarea').forEach(input => {
+            const name = input.getAttribute('name');
+            if (name) {
+                input.setAttribute('name', name.replace(/\d+/, questionCount));
+                input.value = '';
+            }
+        });
+        container.appendChild(newQuestion);
+    });
+
+    document.getElementById('questionsContainer').addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-question')) {
+            if (document.querySelectorAll('.question-item').length > 1) {
+                e.target.closest('.question-item').remove();
+            } else {
+                alert('Должен быть хотя бы один вопрос');
+            }
+        }
+    });
+</script>
+{% endblock %}

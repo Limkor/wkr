@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Детали назначения{% endblock %}
+{% block content %}
+<h2>Результаты сотрудника: {{ assignment.employee.username }}</h2>
+<p><strong>Тест:</strong> {{ assignment.test.title }}</p>
+<p><strong>Статус:</strong> {{ assignment.status }}</p>
+<p><strong>Баллы:</strong> {{ assignment.score }} / {{ assignment.test.questions|sum(attribute='points') }}</p>
+
+{% if answers %}
+    <h4>Ответы</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Вопрос</th>
+                <th>Ответ сотрудника</th>
+                <th>Правильный ответ</th>
+                <th>Результат</th>
+                <th>Баллы</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ans in answers %}
+            <tr class="{% if ans.is_correct %}table-success{% else %}table-danger{% endif %}">
+                <td>{{ ans.question.question }} </td>
+                <td>{{ ans.user_answer }} </td>
+                <td>{{ ans.question.correct_answer }} </td>
+                <td>{{ "Верно" if ans.is_correct else "Неверно" }} </td>
+                <td>{{ ans.points_earned }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Ответы ещё не сохранены.</p>
+{% endif %}
+
+<a href="{{ url_for('hr.dashboard') }}" class="btn btn-secondary">Назад</a>
+{% endblock %}
