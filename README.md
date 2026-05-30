@@ -41,7 +41,7 @@ wkr/
 ├── run.py                        # Точка входа
 ├── check_db.py                   # Утилита проверки БД
 └── README.md                     # Документация
-
+```
 ## 🛠️ Технологии
 
 - **Backend**: Python 3.8+, Flask, Flask-SQLAlchemy
